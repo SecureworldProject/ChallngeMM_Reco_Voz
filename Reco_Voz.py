@@ -14,8 +14,6 @@ from tkinter import messagebox, ttk
 import tkinter as tk
 import lock
 from Funtions_Recovoz import calculate_delta, extract_features
-from asyncio.windows_events import NULL
-from functools import partial
 
 warnings.filterwarnings("ignore")
 
