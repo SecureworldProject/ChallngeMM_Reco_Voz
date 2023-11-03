@@ -1,0 +1,15 @@
+Isa-sample0.wav
+Isa-sample1.wav
+Isa-sample2.wav
+Isa-sample3.wav
+Isa-sample4.wav
+Fernando-sample0.wav
+Fernando-sample1.wav
+Fernando-sample2.wav
+Fernando-sample3.wav
+Fernando-sample4.wav
+0-sample0.wav
+0-sample1.wav
+0-sample2.wav
+0-sample3.wav
+0-sample4.wav
