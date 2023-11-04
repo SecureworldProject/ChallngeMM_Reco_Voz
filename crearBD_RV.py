@@ -12,6 +12,8 @@ from sklearn.mixture import GaussianMixture
 from Funtions_Recovoz import calculate_delta, extract_features
 from tkinter import messagebox, ttk
 import tkinter as tk
+import random
+from tkinter import *
 
 warnings.filterwarnings("ignore")
 
@@ -35,7 +37,22 @@ def record_audio_train():
         info = audio.get_host_api_info_by_index(0)
         numdevices = info.get('deviceCount')
         if (numdevices>0):
-            messagebox.showinfo(message="Se iniciará la grabación del audio "+ str(count+1)+ " de 5 para crear la data del usuario", title="Inicio de grabación audio")
+            url_text= dataPath+"\\El_Quijote.txt"
+            text=open(url_text,'r', encoding="utf-8")
+
+            #skip zero header
+            text.seek(random.randint(0, 10000))
+
+            #reading information header 
+            text_view = text.read(512)
+            
+            totall_text = StringVar()
+            totall_text.set(text_view)
+
+            totall = Label(main_window, textvariable=totall_text)
+            totall.place(width=700, height=200)            
+
+            messagebox.showinfo(message="Se iniciará la grabación del audio "+ str(count+1)+ " de 5 para crear la data del usuario. Debe ACEPTAR este mensaje y LEER EN VOZ ALTA EL MENSAJE QUE APARECE EN PANTALLA", title="Inicio de grabación audio")
             stream = audio.open(format=FORMAT, channels=CHANNELS,
                         rate=RATE, input=True,input_device_index = 0,
                         frames_per_buffer=CHUNK)
@@ -47,6 +64,7 @@ def record_audio_train():
             stream.stop_stream()
             stream.close()
             audio.terminate()
+            
         
         else:
             messagebox.showinfo(message="Este challenge no se puede ejecutar porque no se encuentra micrófono en tu PC", title="No existe dispositivo de grabación de audio")
@@ -114,16 +132,21 @@ def accept_selection():
         exit()
 
 main_window = tk.Tk()
-main_window.config(width=500, height=200)
-main_window.title("Seleccione la accion que desea realizar")
+main_window.config(width=700, height=200)
+main_window.title("Challenge de Reconocimiento de Voz")
+
+label_text = StringVar()
+label_text.set("Seleccione la accion que desea realizar:")
+label=Label(main_window, textvariable=label_text)
+label.place(width=500, height=70)  
 combo = ttk.Combobox(
     state="readonly",
     values=["Grabar audio para entrenamiento", "Entrenar modelos"]
 )
 
-combo.set("Grabar audio para entrenamiento")
+
 combo.config(width=50, height=50)
-combo.place(x=50, y=50)
+combo.place(x=150, y=50)
 button = ttk.Button(text="Aceptar", command=accept_selection)
-button.place(x=180, y=150)
-main_window.mainloop()
+button.place(x=550, y=150)
+main_window.mainloop(0)

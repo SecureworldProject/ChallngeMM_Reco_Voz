@@ -11,9 +11,11 @@ from scipy.io.wavfile import read
 import python_speech_features as mfcc
 from sklearn.mixture import GaussianMixture 
 from tkinter import messagebox, ttk
+from tkinter import *
 import tkinter as tk
 import lock
 from Funtions_Recovoz import calculate_delta, extract_features
+import random
 
 warnings.filterwarnings("ignore")
 
@@ -54,7 +56,22 @@ def executeChallenge():
     numdevices = info.get('deviceCount')
     
     if (numdevices>0):
-        messagebox.showinfo(message="El challenge de Reconocimiento de Voz iniciara grabación de audio", title="Inicio de grabación audio")
+        url_text= dataPath+"\\El_Quijote.txt"
+        text=open(url_text,'r', encoding="utf-8")
+
+        #skip zero header
+        text.seek(random.randint(0, 10000))
+
+        #reading information header 
+        text_view = text.read(512)
+        
+        root = Tk()
+
+        label = Label(root,text=f""+text_view)
+        label.pack()
+
+         
+        messagebox.showinfo(message="El challenge de Reconocimiento de Voz iniciara grabación de audio, LEA EN VOZ ALTA EL MENSAJE QUE APARECE EN PANTALLA", title="Inicio de grabación audio")
         stream = audio.open(format=FORMAT, channels=CHANNELS,
                     rate=RATE, input=True,input_device_index = 0,
                     frames_per_buffer=CHUNK)
@@ -66,6 +83,7 @@ def executeChallenge():
         stream.stop_stream()
         stream.close()
         audio.terminate()
+        root.mainloop(1)
         
     else:
         messagebox.showinfo(message="Este challenge no se puede ejecutar porque no se encuentra micrófono en tu PC", title="No existe dispositivo de grabación de audio")
