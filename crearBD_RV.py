@@ -24,7 +24,7 @@ def record_audio_train():
     gmm_files = [os.path.join(modelpath,fname) for fname in
                   os.listdir(modelpath) if fname.endswith('.gmm')]
     models    = [pickle.load(open(fname,'rb')) for fname in gmm_files]
-    Name =str(len(models))
+    name =str(len(models))
     for count in range(5):
         FORMAT = pyaudio.paInt16
         CHANNELS = 1
@@ -72,7 +72,7 @@ def record_audio_train():
 
         
         
-        OUTPUT_FILENAME=Name+"-sample"+str(count)+".wav"
+        OUTPUT_FILENAME=name+"-sample"+str(count)+".wav"
         WAVE_OUTPUT_FILENAME=os.path.join(dataPath+"\\training_set\\",OUTPUT_FILENAME)
         trainedfilelist = open(dataPath+"\\training_set_addition.txt", 'a')
         
@@ -95,10 +95,13 @@ def train_model():
     file_paths = open(train_file,'r')
     
     count = 1
+    c=0
     features = np.asarray(())
     for path in file_paths:    
         path = path.strip()   
         print(path)
+        
+
 
         sr,audio = read(source + path)
         print(sr)
@@ -109,7 +112,8 @@ def train_model():
         else:
             features = np.vstack((features, vector))
 
-        if count == 5:    
+        if count == 5:  
+            c+=1  
             gmm = GaussianMixture(n_components = 6, max_iter = 200, covariance_type='diag',n_init = 3)
             gmm.fit(features)
             
@@ -120,6 +124,12 @@ def train_model():
             features = np.asarray(())
             count = 0
         count = count + 1
+    totall_text = StringVar()
+    
+    totall_text.set("Se han entrenado " + str(len(os.listdir(dest)))+" modelos satisfactoriamente")
+
+    totall = Label(main_window, textvariable=totall_text)
+    totall.place(width=700, height=200)
 
 def accept_selection():
     # Obtener la opción seleccionada.
