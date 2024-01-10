@@ -13,7 +13,6 @@ from sklearn.mixture import GaussianMixture
 from tkinter import messagebox, ttk
 from tkinter import *
 import tkinter as tk
-import lock
 from Funtions_Recovoz import calculate_delta, extract_features
 import random
 
@@ -39,10 +38,6 @@ def executeChallenge():
     dataPath = os.environ['SECUREMIRROR_CAPTURES']
 
     print("CHALLENGE_RECO_VOZ --> Storage folder is:", dataPath)
-
-    # Mecanismo de lock BEGIN
-    # -----------------------
-    lock.lockIN("Reco_Voz")
 
     FORMAT = pyaudio.paInt16
     CHANNELS = 1
@@ -87,16 +82,12 @@ def executeChallenge():
         
     else:
         messagebox.showinfo(message="Este challenge no se puede ejecutar porque no se encuentra micrófono en tu PC", title="No existe dispositivo de grabación de audio")
-        lock.lockOUT("Reco_Voz")
         key_size = 0
         result = (NULL, key_size)
         print("CHALLENGE_RECO_VOZ --> result:", result)
         return result
 
     
-    #cerramos el lock
-    lock.lockOUT("Reco_Voz")
-
     #Se crea el archivo de audio
     OUTPUT_FILENAME="sample.wav"
     WAVE_OUTPUT_FILENAME=os.path.join(dataPath+"\\testing_set\\",OUTPUT_FILENAME)
